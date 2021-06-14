@@ -1,58 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { FC, useEffect } from "react";
+import { Header } from "./components/header";
+import Router from "./Router";
+import './App.css'
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { fetchUserWeights, listenAuthState, selectIsSignedIn, selectUsername, selectNickname } from './features/users/usersSlice'
 
-function App() {
+const App: FC = () => {
+  const dispatch = useAppDispatch();
+  const isSignedIn = useAppSelector(selectIsSignedIn)
+  const username = useAppSelector(selectUsername);
+  const nickname = useAppSelector(selectNickname)
+  useEffect(() => {
+    if(!isSignedIn) {
+      dispatch(listenAuthState())
+    } else {
+      dispatch(fetchUserWeights(undefined))
+    }
+  },[isSignedIn, dispatch, username])
+  useEffect(() => {
+    if(username && !nickname) {
+
+    }
+  },[username])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Router />
+    </>
   );
-}
+};
 
 export default App;

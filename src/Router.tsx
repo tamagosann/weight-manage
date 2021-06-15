@@ -1,5 +1,5 @@
 import { Route, Switch } from "react-router-dom"
-import {  History, Home, InputWeight, UserInfo } from "./templates"
+import {  AverageWeightData, Calender, History, Home, InputWeight, UserInfo } from "./templates"
 
 
 const Router = () => {
@@ -10,6 +10,8 @@ const Router = () => {
         <Route path={'/input-weight/:weightId'} component={InputWeight} />
         <Route exact path={"/user-info"} component={UserInfo} />
         <Route exact path={"/history"} component={History} />
+        <Route exact path={"/calender"} component={Calender} />
+        <Route exact path={"/average-weight"} component={AverageWeightData} />
     </Switch>
   )
 }

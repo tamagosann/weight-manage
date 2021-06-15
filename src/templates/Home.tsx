@@ -141,6 +141,10 @@ const Home: FC = () => {
           label={"履歴画面へ"}
           onClick={() => link("/history")}
         />
+        <PrimaryButton
+          label={"カレンダー"}
+          onClick={() => link("/calender")}
+        />
       </div>
     </Container>
   );

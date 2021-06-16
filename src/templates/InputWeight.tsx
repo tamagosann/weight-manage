@@ -56,6 +56,7 @@ const InputWeight: FC = () => {
   const weights = useAppSelector(selectWights);
   const [editingWeight, setEditingWeight] = useState<Weight | null>(null);
   const { register, handleSubmit, reset } = useForm();
+  
   const handleCreate = (data: UserInputs): void => {
     const submitData = getSubmitData(data);
     dispatch(createWeight(submitData));

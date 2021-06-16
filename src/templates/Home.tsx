@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { Container, Typography } from "@material-ui/core";
 import {
   Brush,
@@ -16,6 +16,7 @@ import { useHistory } from "react-router";
 import { useAppSelector } from "../app/hooks";
 import {
   selectCurrentWeight,
+  selectHeight,
   selectStartWeight,
   selectTargetWeight,
   selectWights,
@@ -39,7 +40,9 @@ const Home: FC = () => {
   const startWeight = useAppSelector(selectStartWeight);
   const currentWeight = useAppSelector(selectCurrentWeight);
   const targetWeight = useAppSelector(selectTargetWeight);
-  const height = 170;
+  const height = useAppSelector(selectHeight);
+  console.log(startWeight, targetWeight, height);
+
   const data: GraphData = weights.map((weight) => {
     return { date: weight.date, weight: weight.weight };
   });
@@ -50,11 +53,14 @@ const Home: FC = () => {
     [history]
   );
   const Bmi = useMemo(() => {
-    if (currentWeight) {
+    console.log(height);
+    console.log(currentWeight);
+    if (currentWeight && height) {
+      console.log(height);
       const bmi: number = Math.floor(currentWeight / (height / 100) ** 2);
       return bmi;
     }
-  }, [currentWeight]);
+  }, [currentWeight, height]);
 
   const status: EvaluateStatus = useMemo(() => {
     if (Bmi) {
@@ -117,18 +123,22 @@ const Home: FC = () => {
             stroke="#8884d8"
             strokeWidth={3}
           />
-          <ReferenceLine
-            y={startWeight}
-            label="開始体重"
-            stroke="red"
-            strokeDasharray="3 3"
-          />
-          <ReferenceLine
-            y={targetWeight}
-            label="目標体重"
-            stroke="blue"
-            strokeDasharray="3 3"
-          />
+          {startWeight && (
+            <ReferenceLine
+              y={startWeight}
+              label="開始体重"
+              stroke="red"
+              strokeDasharray="3 3"
+            />
+          )}
+          {targetWeight && (
+            <ReferenceLine
+              y={targetWeight}
+              label="目標体重"
+              stroke="blue"
+              strokeDasharray="3 3"
+            />
+          )}
           <Brush dataKey="date" stroke="#8884d8" />
         </LineChart>
       </ResponsiveContainer>
@@ -137,13 +147,11 @@ const Home: FC = () => {
           label={"記録を追加"}
           onClick={() => link("/input-weight")}
         />
+        <PrimaryButton label={"履歴画面へ"} onClick={() => link("/history")} />
+        <PrimaryButton label={"カレンダー"} onClick={() => link("/calender")} />
         <PrimaryButton
-          label={"履歴画面へ"}
-          onClick={() => link("/history")}
-        />
-        <PrimaryButton
-          label={"カレンダー"}
-          onClick={() => link("/calender")}
+          label={"ユーザー情報入力"}
+          onClick={() => link("/user-info")}
         />
       </div>
     </Container>

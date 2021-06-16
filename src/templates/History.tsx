@@ -1,5 +1,6 @@
 import Inner from "../components/inner/Inner";
 import {
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -13,15 +14,17 @@ import {
   PrimaryButton,
   SecondaryButton,
 } from "../components/UIKit";
-import { useAppSelector } from "../app/hooks";
-import { selectWights } from "../features/users/usersSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { selectWights, deleteUserWeight } from "../features/users/usersSlice";
 import { FC, useCallback } from "react";
 import styles from "./History.module.scss";
 import { useHistory } from "react-router";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 const History: FC = () => {
   const weights = useAppSelector(selectWights);
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
   const getWeightDiffsFromPrivWeight = useCallback(
     (index: number): number => {
@@ -38,6 +41,20 @@ const History: FC = () => {
     [weights]
   );
 
+  const deleteWeight = useCallback(
+    (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+      weightId: string
+    ): void => {
+      e.stopPropagation();
+      if (!window.confirm("本当に消しますか？")) {
+        return;
+      }
+      dispatch(deleteUserWeight(weightId));
+    },
+    [dispatch]
+  );
+
   return (
     <Inner>
       <PageHeaderOfInput header={"体重遍歴"} />
@@ -48,6 +65,7 @@ const History: FC = () => {
               <TableCell>日付</TableCell>
               <TableCell align="right">体重</TableCell>
               <TableCell align="right">前回からの変化</TableCell>
+              <TableCell align="right">消去</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -72,6 +90,14 @@ const History: FC = () => {
                     }
                   >
                     {getWeightDiffsFromPrivWeight(index)}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      color="inherit"
+                      onClick={(e) => deleteWeight(e, weight.weightId)}
+                    >
+                      <DeleteForeverIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}

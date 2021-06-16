@@ -8,20 +8,13 @@ import { fetchUserWeights, listenAuthState, selectIsSignedIn, selectUsername, se
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const isSignedIn = useAppSelector(selectIsSignedIn)
-  const username = useAppSelector(selectUsername);
-  const nickname = useAppSelector(selectNickname)
   useEffect(() => {
     if(!isSignedIn) {
       dispatch(listenAuthState())
     } else {
       dispatch(fetchUserWeights(undefined))
     }
-  },[isSignedIn, dispatch, username])
-  useEffect(() => {
-    if(username && !nickname) {
-
-    }
-  },[username])
+  },[isSignedIn, dispatch])
   return (
     <>
       <Header />

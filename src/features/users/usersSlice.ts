@@ -66,7 +66,7 @@ export const createUserInfo = createAsyncThunk<
   if (uid) {
     const postData = { userInfo: data, uid };
     await axios
-      .post("http://localhost:3001/samples/create-user-info", { postData })
+      .post("http://weight-manage-a1554.web.app/create-user-info", { postData })
       .then((res) => {
         console.log("success");
       })
@@ -110,7 +110,7 @@ export const createWeight = createAsyncThunk<any, any, { state: RootState }>(
       };
       console.log(postData);
       axios
-        .post("http://localhost:3001/samples/add", { uid, postData })
+        .post("http://weight-manage-a1554.web.app/samples/add", { uid, postData })
         .then((res) => {
           console.log("success");
         })
@@ -138,7 +138,7 @@ export const fetchUserWeights = createAsyncThunk<
   let fethcedUserInfo: UsersState = thunkAPI.getState().users;
   if (uid) {
     await axios
-      .post("http://localhost:3001/samples/fetch-user-info", { uid })
+      .post("http://weight-manage-a1554.web.app/samples/fetch-user-info", { uid })
       .then((res: AxiosResponse) => {
         console.log(res.data);
         fethcedUserInfo = { ...fethcedUserInfo, ...res.data.userInfo };
@@ -174,7 +174,7 @@ export const deleteUserWeight = createAsyncThunk<
     const postData = { weightId };
     let doneDeleteWeights: Weight[] = [];
     await axios
-      .post("http://localhost:3001/samples/delete-weight", { uid, postData })
+      .post("http://weight-manage-a1554.web.app/samples/delete-weight", { uid, postData })
       .then((res: AxiosResponse) => {
         console.log(res.data);
         doneDeleteWeights = res.data as Weight[];
@@ -206,7 +206,7 @@ export const updateUserWeights = createAsyncThunk<
   let updatedWeights: Weight[] = [];
   if (uid) {
     await axios
-      .post("http://localhost:3001/samples/update-weight", { uid, data })
+      .post("http://weight-manage-a1554.web.app/samples/update-weight", { uid, data })
       .then((res: AxiosResponse) => {
         console.log(res.data);
         updatedWeights = res.data as Weight[];
